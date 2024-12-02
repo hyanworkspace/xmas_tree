@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣诞树🎄2024</title>
+    <link rel="stylesheet" href="xmas_tree.css">
+    <script src="/js/vue.min.js"></script>
+</head>
+<body>
+    <div class="tree">
+        <!-- 灯光效果 -->
+        <div class="tree-light" v-for="(item,index) in 50" 
+            :style="{
+                '--appear': index,
+                '--y': 2 * index,
+                '--rotate': maxRotation - rotationStep * index,
+                '--radius': maxRadius - radiusStep * index,
+                '--speed': index * speedFactor,
+                '--delay': index * delayFactor
+            }">
+        </div>
+        <!-- 星星 -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 113.32 108.44" class="tree-star" style="--delay:50;">
+            <path d="M90.19 104.33L57.12 87.38 24.4 105l5.91-36.69L3.44 42.65l36.72-5.72 16.1-33.5L73.06 36.6l36.83 4.97-26.35 26.21z" fill="none" stroke-width="6.88" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+    </div>
+
+    <div id="control" class="control-panel">
+        <div class="control-item">
+            <label>最大旋转角度:</label>
+            <input type="range" v-model.number="maxRotation" min="360" max="1800" step="10">
+            <span>{{maxRotation}}°</span>
+        </div>
+        <div class="control-item">
+            <label>最大半径:</label>
+            <input type="range" v-model.number="maxRadius" min="5" max="20" step="0.5">
+            <span>{{maxRadius}}</span>
+        </div>
+        <div class="control-item">
+            <label>速度系数:</label>
+            <input type="range" v-model.number="speedFactor" min="0.05" max="0.5" step="0.01">
+            <span>{{speedFactor}}</span>
+        </div>
+        <div class="control-item">
+            <label>延迟系数:</label>
+            <input type="range" v-model.number="delayFactor" min="0.01" max="0.2" step="0.01">
+            <span>{{delayFactor}}</span>
+        </div>
+    </div>
+
+    <script>
+        // 创建一个 Vue 实例来管理共享的状态
+        const store = new Vue({
+            data: {
+                maxRotation: 1440,
+                rotationStep: 28.8,
+                maxRadius: 12.5,
+                radiusStep: 0.25,
+                speedFactor: 0.1,
+                delayFactor: 0.05
+            },
+            watch: {
+                maxRotation(newVal) {
+                    this.rotationStep = newVal / 50; // 使用固定值 50
+                },
+                maxRadius(newVal) {
+                    this.radiusStep = newVal / 50; // 使用固定值 50
+                }
+            }
+        });
+
+        // 树的 Vue 实例
+        new Vue({
+            el: '.tree',
+            data: {
+                get maxRotation() { return store.maxRotation; },
+                get rotationStep() { return store.rotationStep; },
+                get maxRadius() { return store.maxRadius; },
+                get radiusStep() { return store.radiusStep; },
+                get speedFactor() { return store.speedFactor; },
+                get delayFactor() { return store.delayFactor; }
+            }
+        });
+
+        // 控制面板的 Vue 实例
+        new Vue({
+            el: '#control',
+            data: store.$data
+        });
+    </script>
+</body>
+</html>

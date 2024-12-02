@@ -1,0 +1,17 @@
+{
+  "name": "tp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "HYan <melon_chaud@163.com>",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "vite": "^6.0.1"
+  }
+}
